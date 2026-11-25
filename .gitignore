@@ -1,0 +1,18 @@
+# Sistema
+.DS_Store
+node_modules/
+
+# Configuración local de Claude Code
+.claude/
+
+# Imágenes originales pesadas y con datos personales (la web usa las versiones optimizadas de site/assets/img)
+originales/
+
+# Hosting
+.vercel
+.netlify
+
+# Material de trabajo
+_work/
+*.mp4
+*.mov
