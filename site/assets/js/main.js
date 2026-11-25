@@ -237,18 +237,93 @@
     requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add("is-in")));
   });
 
-  /* ---------------- Galería (carrusel infinito) ---------------- */
+  /* ---------------- Galería (carrusel infinito, se desliza con el dedo) ---------------- */
   const gal = $("[data-gallery]");
-  if (gal) {
+  const marquee = $("[data-marquee]");
+  if (gal && marquee) {
     const items = C.galeria && C.galeria.length ? C.galeria : [{}, {}, {}, {}];
+    const lock = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
     const card = (it, i, clone) => `
       <figure class="shot" ${clone ? 'aria-hidden="true"' : ""}>
-        <span class="shot__tag ${it.rubro ? "" : "is-pending"}">${it.rubro ? esc(it.rubro) : "[PENDIENTE: rubro]"}</span>
-        <div class="shot__desk">${media(it.src, `Captura ${i + 1} · desktop + celular`, `config.js → galeria[${i}]`, it.rubro ? `Página para ${it.rubro}` : "Página creada con el método")}</div>
+        <div class="shot__win">
+          <div class="shot__bar">
+            <span class="shot__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="shot__url ${it.rubro ? "" : "is-pending"}">${lock}${it.rubro ? esc(it.rubro) : "[PENDIENTE: rubro]"}</span>
+          </div>
+          <div class="shot__desk">${media(it.src, `Captura ${i + 1} · desktop + celular`, `config.js → galeria[${i}]`, it.rubro ? `Página para ${it.rubro}` : "Página creada con el método")}</div>
+        </div>
       </figure>`;
     gal.innerHTML = items.map((it, i) => card(it, i)).join("") + items.map((it, i) => card(it, i, true)).join("");
-    gal.style.setProperty("--dur", items.length * 6 + "s");
     guardImages(gal);
+    $$("img", gal).forEach((img) => { img.draggable = false; });
+
+    // Movimiento: avanza solo y se puede arrastrar (dedo o mouse) con inercia.
+    const SPEED = reduce ? 0 : 40;          // px por segundo en modo automático
+    let x = 0, loopW = 0, vel = 0, dragging = false, hovering = false, inView = false;
+    let startX = 0, startY = 0, startOff = 0, lastX = 0, lastT = 0, axis = null, raf = 0, prevT = 0;
+
+    const measure = () => {
+      const shots = gal.children;
+      loopW = shots.length > items.length ? shots[items.length].offsetLeft - shots[0].offsetLeft : 0;
+    };
+    const wrap = () => {
+      if (!loopW) return;
+      while (x <= -loopW) x += loopW;
+      while (x > 0) x -= loopW;
+    };
+    const paint = () => { gal.style.transform = `translate3d(${x.toFixed(2)}px,0,0)`; };
+    const tick = (t) => {
+      const dt = Math.min(0.05, (t - (prevT || t)) / 1000);
+      prevT = t;
+      if (!dragging) {
+        if (Math.abs(vel) > 5) { x += vel * dt; vel *= Math.pow(0.04, dt); }   // inercia
+        else { vel = 0; if (!hovering) x -= SPEED * dt; }
+      }
+      wrap(); paint();
+      raf = inView ? requestAnimationFrame(tick) : 0;
+    };
+    const start = () => { if (!raf) { prevT = 0; raf = requestAnimationFrame(tick); } };
+
+    marquee.addEventListener("pointerdown", (e) => {
+      if (e.pointerType === "mouse" && e.button !== 0) return;
+      dragging = true; axis = e.pointerType === "mouse" ? "x" : null;
+      startX = lastX = e.clientX; startY = e.clientY; startOff = x; lastT = performance.now(); vel = 0;
+      if (axis === "x") { marquee.setPointerCapture(e.pointerId); marquee.classList.add("is-dragging"); }
+    });
+    marquee.addEventListener("pointermove", (e) => {
+      if (!dragging) return;
+      const dx = e.clientX - startX, dy = e.clientY - startY;
+      if (!axis) {                       // en celular decidimos si es scroll vertical o swipe
+        if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+        axis = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+        if (axis === "y") { dragging = false; return; }
+        marquee.setPointerCapture(e.pointerId); marquee.classList.add("is-dragging");
+      }
+      const now = performance.now(), dtm = Math.max(1, now - lastT);
+      vel = vel * 0.6 + ((e.clientX - lastX) / dtm) * 1000 * 0.4;
+      lastX = e.clientX; lastT = now;
+      x = startOff + dx; wrap(); paint();
+    });
+    const end = () => {
+      if (!dragging) return;
+      dragging = false; marquee.classList.remove("is-dragging");
+      if (performance.now() - lastT > 120) vel = 0;      // se soltó quieto: sin inercia
+      vel = Math.max(-2500, Math.min(2500, vel));
+    };
+    marquee.addEventListener("pointerup", end);
+    marquee.addEventListener("pointercancel", end);
+    marquee.addEventListener("lostpointercapture", end);
+    if (finePointer) {
+      marquee.addEventListener("pointerenter", () => { hovering = true; });
+      marquee.addEventListener("pointerleave", () => { hovering = false; });
+    }
+
+    measure();
+    addEventListener("resize", () => { measure(); wrap(); paint(); }, { passive: true });
+    $$("img", gal).forEach((img) => img.addEventListener("load", measure, { once: true }));
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(([e]) => { inView = e.isIntersecting; if (inView) start(); }, { rootMargin: "100px" }).observe(marquee);
+    } else { inView = true; start(); }
   }
 
   /* ---------------- Reseñas ---------------- */
