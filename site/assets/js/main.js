@@ -284,35 +284,54 @@
     };
     const start = () => { if (!raf) { prevT = 0; raf = requestAnimationFrame(tick); } };
 
-    marquee.addEventListener("pointerdown", (e) => {
-      if (e.pointerType === "mouse" && e.button !== 0) return;
-      dragging = true; axis = e.pointerType === "mouse" ? "x" : null;
-      startX = lastX = e.clientX; startY = e.clientY; startOff = x; lastT = performance.now(); vel = 0;
-      if (axis === "x") { marquee.setPointerCapture(e.pointerId); marquee.classList.add("is-dragging"); }
-    });
-    marquee.addEventListener("pointermove", (e) => {
-      if (!dragging) return;
-      const dx = e.clientX - startX, dy = e.clientY - startY;
-      if (!axis) {                       // en celular decidimos si es scroll vertical o swipe
-        if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
-        axis = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
-        if (axis === "y") { dragging = false; return; }
-        marquee.setPointerCapture(e.pointerId); marquee.classList.add("is-dragging");
-      }
+    // Arrastre: mouse con pointer events; dedo con touch events (en iOS/Android los pointer events
+    // se cancelan apenas el navegador detecta algo de scroll vertical y el swipe quedaba cortado).
+    const begin = (cx, cy) => {
+      dragging = true; axis = null; vel = 0;
+      startX = lastX = cx; startY = cy; startOff = x; lastT = performance.now();
+    };
+    const move = (cx) => {
       const now = performance.now(), dtm = Math.max(1, now - lastT);
-      vel = vel * 0.6 + ((e.clientX - lastX) / dtm) * 1000 * 0.4;
-      lastX = e.clientX; lastT = now;
-      x = startOff + dx; wrap(); paint();
-    });
+      vel = vel * 0.5 + ((cx - lastX) / dtm) * 1000 * 0.5;
+      lastX = cx; lastT = now;
+      x = startOff + (cx - startX); wrap(); paint();
+    };
     const end = () => {
       if (!dragging) return;
       dragging = false; marquee.classList.remove("is-dragging");
-      if (performance.now() - lastT > 120) vel = 0;      // se soltó quieto: sin inercia
-      vel = Math.max(-2500, Math.min(2500, vel));
+      if (performance.now() - lastT > 100) vel = 0;       // se soltó quieto: sin inercia
+      vel = Math.max(-3000, Math.min(3000, vel));
     };
-    marquee.addEventListener("pointerup", end);
-    marquee.addEventListener("pointercancel", end);
-    marquee.addEventListener("lostpointercapture", end);
+
+    marquee.addEventListener("touchstart", (e) => {
+      if (e.touches.length !== 1) { end(); return; }
+      begin(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: true });
+    marquee.addEventListener("touchmove", (e) => {
+      if (!dragging || e.touches.length !== 1) return;
+      const t = e.touches[0], dx = t.clientX - startX, dy = t.clientY - startY;
+      if (!axis) {
+        if (Math.abs(dx) < 5 && Math.abs(dy) < 5) return;
+        axis = Math.abs(dx) >= Math.abs(dy) * 0.8 ? "x" : "y";
+        if (axis === "y") { dragging = false; return; }   // deja scrollear la página
+        marquee.classList.add("is-dragging");
+      }
+      if (e.cancelable) e.preventDefault();               // gesto horizontal: la página no se mueve
+      move(t.clientX);
+    }, { passive: false });
+    marquee.addEventListener("touchend", end);
+    marquee.addEventListener("touchcancel", end);
+
+    marquee.addEventListener("pointerdown", (e) => {
+      if (e.pointerType !== "mouse" || e.button !== 0) return;
+      begin(e.clientX, e.clientY); axis = "x";
+      marquee.setPointerCapture(e.pointerId); marquee.classList.add("is-dragging");
+    });
+    marquee.addEventListener("pointermove", (e) => {
+      if (e.pointerType === "mouse" && dragging) move(e.clientX);
+    });
+    marquee.addEventListener("pointerup", (e) => { if (e.pointerType === "mouse") end(); });
+    marquee.addEventListener("lostpointercapture", (e) => { if (e.pointerType === "mouse") end(); });
     if (finePointer) {
       marquee.addEventListener("pointerenter", () => { hovering = true; });
       marquee.addEventListener("pointerleave", () => { hovering = false; });
@@ -332,9 +351,12 @@
     const list = C.resenas || [];
     if (list.length) {
       rev.innerHTML = list.map((r) => `
-        <article class="review glass">
-          <div class="review__shot">${media(r.src, "Captura del testimonio", "", `Testimonio de ${r.nombre || ""}`)}</div>
-          <div class="review__who"><b>${esc(r.nombre || "")}</b><span>${esc(r.rubro || "")}</span></div>
+        <article class="review review--real glass">
+          <header class="review__head">
+            ${r.foto ? `<img class="review__avatar" src="${esc(r.foto)}" alt="" width="96" height="96" loading="lazy" decoding="async">` : ""}
+            <div class="review__who"><b>${esc(r.nombre || "")}</b><span>${esc(r.rubro || "")}</span></div>
+          </header>
+          <div class="review__msg">${media(r.src, "Captura del testimonio", "", r.texto || `Mensaje de ${r.nombre || ""}`)}</div>
         </article>`).join("");
     } else {
       rev.innerHTML = [1, 2, 3].map((n) => `

@@ -426,6 +426,14 @@ strong,b{font-weight:600;color:var(--text)}
 .review__who b{display:block;font:700 18px/1.2 var(--f-display);letter-spacing:-.02em}
 .review__who span{font:500 12px/1.4 var(--f-mono);color:var(--muted)}
 .review__who.is-pending b,.review__who.is-pending span{color:var(--acc-3)}
+.review--real{display:flex;flex-direction:column;gap:14px;padding:18px;width:min(84vw,400px)}
+.review__head{display:flex;align-items:center;gap:12px}
+.review__avatar{width:48px;height:48px;border-radius:50%;object-fit:cover;flex:none;box-shadow:0 0 0 2px var(--bg),0 0 0 3.5px rgba(139,92,255,.7)}
+.review--real .review__who{padding:0;min-width:0;flex:1}
+.review--real .review__who b{font-size:17px}
+.review__msg{border-radius:16px 16px 16px 4px;overflow:hidden;background:#232323;box-shadow:0 14px 30px -16px rgba(0,0,0,.8)}
+.review__msg img{display:block;width:100%;height:auto}
+@media (min-width:1240px){.rail:has(.review--real){justify-content:center;padding-left:var(--gutter);scroll-padding-left:var(--gutter)}}
 @media (min-width:1240px){.rail{padding-left:calc((100vw - 1200px) / 2 + var(--gutter));scroll-padding-left:calc((100vw - 1200px) / 2 + var(--gutter))}}
 
 /* 11 · FAQ */

@@ -46,7 +46,10 @@ window.SITE_CONFIG = {
     { src: "assets/img/galeria/amelie_2.webp", rubro: "Amélie · Estética" }
   ],
 
-  // [PENDIENTE] Sección 10 · Reseñas: SOLO testimonios reales.
-  // Ejemplo: { src: "assets/img/resena-1.webp", nombre: "Nombre", rubro: "Rubro" }
-  resenas: []
+  // Sección 10 · Reseñas: SOLO testimonios reales (captura del mensaje + foto de perfil).
+  resenas: [
+    { src: "assets/img/resena-1.webp", foto: "assets/img/cliente-1.webp", nombre: "Max Rosset", rubro: "Marketing", texto: "La página quedó perfecta! Se ve espectacular ya sea desde el celu o compu. Todos mis clientes ahora reservan sus consultas desde ahí!" },
+    { src: "assets/img/resena-2.webp", foto: "assets/img/cliente-2.webp", nombre: "Fabi Rojas", rubro: "Estética", texto: "Esto fue un antes y un después para mi estética! Genera mucha confianza y autoridad en mis clientes permitiéndome agendar más consultas. Estoy fascinada" },
+    { src: "assets/img/resena-3.webp", foto: "assets/img/cliente-3.webp", nombre: "Juan Felicioli", rubro: "Productos Digitales", texto: "Los anuncios que lanzó en Meta los lleva directo a mi landing. Es increíble cómo, sin yo estar presente, mi página se encarga de vender por sí sola las 24hs!" }
+  ]
 };
