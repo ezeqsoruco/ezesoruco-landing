@@ -82,7 +82,7 @@ El copy de cada sección es exactamente el entregado en el pedido original (no s
 Hasta que estén, cada lugar muestra un placeholder visible con la etiqueta `[PENDIENTE]`.
 
 ## Cambios (24/11/2026)
-- Bonos: B1 USD 5,99 · B2 USD 14,99 · B3 USD 8,99 · B4 USD 13,99 · B5 USD 9,99 = USD 53,95 (cada uno marcado "Gratis").
+- Bonos: B1 USD 5,99 · B2 USD 14,99 · B3 USD 8,99 · B4 USD 9,99 (Cómo vender páginas web) · B5 USD 13,99 (Actualizaciones de por vida) = USD 53,95 (cada uno marcado "Gratis").
 - Valor total USD 82,95 (curso 29 + bonos 53,95) → preventa USD 29 (65% OFF) hasta el 8/12. Desde el 9/12: USD 41,50 (50% OFF). "Pago único en tu moneda local". Mockup de oferta: site/assets/img/mockup-oferta.webp. Galería en el orden en que se agregaron los archivos.
 - Galería con 12 capturas reales (Amélie, Bör, Giolitti, Nina) en `site/assets/img/galeria/` (WebP); originales en `originales/`.
 - Sin aviso legal de Meta en el pie. Sin etiqueta [PENDIENTE] sobre el mockup del hero.
