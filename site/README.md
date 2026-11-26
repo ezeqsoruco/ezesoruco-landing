@@ -1,4 +1,4 @@
-# Creá tu Página Web con IA — Landing de preventa
+# Tu Web Profesional que Vende 24/7 en Solo 15 Minutos — Landing de preventa
 
 Landing estática (HTML + CSS + JS, sin frameworks ni librerías) pensada para tráfico de Meta Ads en celular.
 

@@ -1,5 +1,5 @@
 /* =========================================================
-   Creá tu Página Web con IA — estilos
+   Tu Web Profesional que Vende 24/7 en Solo 15 Minutos — estilos
    Mobile first · sin frameworks · tokens en :root
    ========================================================= */
 :root{
@@ -101,6 +101,7 @@ strong,b{font-weight:600;color:var(--text)}
 .brand__mark{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:linear-gradient(140deg,#A47DFF,#6E3FF0);box-shadow:0 0 20px -4px var(--acc);color:#fff;flex:none}
 .brand__mark svg{width:17px;height:17px}
 .brand__name em{font-style:normal;color:var(--acc-3)}
+@media (max-width:560px){.nav .brand__name em{display:none}}
 .nav__links{display:none;margin-left:auto;gap:26px;font-size:14px;color:var(--muted)}
 .nav__links a{transition:color .2s}
 .nav__links a:hover{color:var(--text)}

@@ -1,5 +1,5 @@
 /* =========================================================
-   Creá tu Página Web con IA — interacciones
+   Tu Web Profesional que Vende 24/7 en Solo 15 Minutos — interacciones
    Sin librerías: todo vanilla para que cargue rápido en celular.
    Módulos: Media · Hero (la página que se arma sola) · Galería ·
    Reseñas · Revelados · Contadores · Temario · Cuenta regresiva ·
@@ -457,7 +457,7 @@
     }
     if (navCta && pastBonos !== navSwapped) {
       navSwapped = pastBonos;
-      navCta.textContent = pastBonos ? "Asegurá tu lugar" : "Ver el temario";
+      navCta.textContent = pastBonos ? "Asegura tu lugar" : "Ver el temario";
       navCta.setAttribute("href", pastBonos ? "#oferta" : "#temario");
       navCta.classList.toggle("btn--primary", pastBonos);
       navCta.classList.toggle("btn--ghost", !pastBonos);
@@ -520,7 +520,7 @@
   // Eventos: PageView (al cargar), ViewContent (al llegar a la oferta) e
   // InitiateCheckout (clic en un botón de compra). Purchase lo registra la pasarela.
   const pixelId = String(C.metaPixelId || "").trim();
-  const PRODUCTO = "Creá tu Página Web con IA";
+  const PRODUCTO = "Tu Web Profesional que Vende 24/7 en Solo 15 Minutos";
   function track(kind, name, params) {
     if (!pixelId || typeof window.fbq !== "function") return;
     window.fbq(kind, name, params || {});

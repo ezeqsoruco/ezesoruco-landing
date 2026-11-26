@@ -1,8 +1,8 @@
-# Creá tu Página Web con IA — Brief
+# Tu Web Profesional que Vende 24/7 en Solo 15 Minutos — Brief
 
 ## Proyecto
 - **Rubro:** educación digital · curso online low ticket en preventa.
-- **Nombre:** Creá tu Página Web con IA.
+- **Nombre:** Tu Web Profesional que Vende 24/7 en Solo 15 Minutos (antes "Creá tu Página Web con IA"). Copy en tuteo para toda Latinoamérica.
 - **Objetivo:** validar intención de compra con tráfico de Meta Ads (mayoría celular).
 - **CTA principal:** Compra → checkout de Winnerfy
   `https://pay.ezesoruco.com/checkout/webs-pro-con-inteligencia-artificial`
