@@ -46,7 +46,7 @@ Los textos del hero (pre-titular, H1, subtítulo, botón) acompañan la secuenci
 2. Galería — carrusel infinito de capturas [PENDIENTE]
 3. Dolores — 5 tarjetas de vidrio
 4. Transformación — 5 tarjetas + botón al temario
-5. Temario — línea de tiempo vertical (7 días)
+5. Temario — línea de tiempo vertical (7 pasos)
 6. Bonos — 5 cajas con valor tachado
 7. Autoridad — foto [PENDIENTE] + contadores animados
 8. Oferta de preventa — **primer lugar con precio** + cuenta regresiva
