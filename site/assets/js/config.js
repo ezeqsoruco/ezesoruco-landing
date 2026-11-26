@@ -9,8 +9,8 @@ window.SITE_CONFIG = {
   // Checkout de Winnerfy (todos los botones de compra van acá)
   checkoutUrl: "https://pay.ezesoruco.com/checkout/webs-pro-con-inteligencia-artificial",
 
-  // [PENDIENTE] ID del píxel de Meta (solo números). Vacío = no se carga.
-  metaPixelId: "",
+  // ID del píxel de Meta (solo números). Vacío = no se carga.
+  metaPixelId: "3489952734544730",
 
   // Fin de la preventa: 8/12/2026 23:59 hora de Argentina (UTC-3).
   // Es una fecha fija: no se reinicia al recargar.

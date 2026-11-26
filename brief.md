@@ -66,8 +66,8 @@ El copy de cada sección es exactamente el entregado en el pedido original (no s
 
 ## Medición (Meta)
 - Píxel [PENDIENTE: ID], cargado de forma asíncrona y diferida (no bloquea el render).
-- Eventos: `PageView`, `ViewContent`, `Scroll50` y `Scroll75` (custom), `ClicComprar` (custom) en cada botón de compra.
-- **No** se disparan `InitiateCheckout` ni `Purchase` (los registra Winnerfy).
+- Píxel `3489952734544730`. Eventos: `PageView` (al cargar), `ViewContent` (al llegar a la oferta) e `InitiateCheckout` (clic en un botón de compra, con value 29 o 41,50 USD).
+- `Purchase` lo registra la pasarela de pago (pay.ezesoruco.com) con el mismo píxel.
 
 ## Archivos que provee Ezequiel (carpeta `site/assets/img/`, rutas en `site/assets/js/config.js`)
 | Archivo | Sección |

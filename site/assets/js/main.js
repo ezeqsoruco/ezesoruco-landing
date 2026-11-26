@@ -470,16 +470,6 @@
     if (nav) nav.classList.toggle("is-hidden", navHidden);
   }
 
-  /* ---------------- Profundidad de scroll (píxel) ---------------- */
-  const depthSent = { 50: false, 75: false };
-  function updateDepth() {
-    const doc = document.documentElement;
-    const pct = (scrollY + innerHeight) / doc.scrollHeight;
-    [50, 75].forEach((n) => {
-      if (!depthSent[n] && pct >= n / 100) { depthSent[n] = true; track("trackCustom", `Scroll${n}`, { porcentaje: n }); }
-    });
-  }
-
   /* ---------------- Loop de scroll ---------------- */
   let ticking = false;
   function onScroll() {
@@ -490,7 +480,6 @@
       kickHero();
       updateTimeline();
       updateChrome();
-      updateDepth();
     });
   }
   addEventListener("scroll", onScroll, { passive: true });
@@ -528,12 +517,15 @@
 
   /* ---------------- Píxel de Meta ---------------- */
   // Se carga después del load para no frenar la página. Sin ID = no se carga.
-  // No dispara InitiateCheckout ni Purchase (los registra el píxel de Winnerfy).
+  // Eventos: PageView (al cargar), ViewContent (al llegar a la oferta) e
+  // InitiateCheckout (clic en un botón de compra). Purchase lo registra la pasarela.
   const pixelId = String(C.metaPixelId || "").trim();
+  const PRODUCTO = "Creá tu Página Web con IA";
   function track(kind, name, params) {
     if (!pixelId || typeof window.fbq !== "function") return;
     window.fbq(kind, name, params || {});
   }
+  const precioActual = () => (document.documentElement.classList.contains("is-expired") ? 41.5 : 29);
   if (pixelId) {
     !function (f, b, e, v, n, t, s) {
       if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
@@ -541,7 +533,6 @@
     }(window, document);
     window.fbq("init", pixelId);
     window.fbq("track", "PageView");
-    window.fbq("track", "ViewContent", { content_name: "Creá tu Página Web con IA", content_category: "Curso online" });
     const load = () => {
       const s = document.createElement("script");
       s.async = true; s.src = "https://connect.facebook.net/en_US/fbevents.js";
@@ -549,11 +540,21 @@
     };
     const later = () => ("requestIdleCallback" in window ? requestIdleCallback(load, { timeout: 2500 }) : setTimeout(load, 1200));
     if (document.readyState === "complete") later(); else addEventListener("load", later, { once: true });
+
+    // ViewContent: una sola vez, cuando la sección de la oferta entra en pantalla.
+    const oferta = document.getElementById("oferta");
+    const sendView = () => track("track", "ViewContent", { content_name: PRODUCTO, content_category: "Curso online", value: precioActual(), currency: "USD" });
+    if (oferta && "IntersectionObserver" in window) {
+      const vio = new IntersectionObserver((ents) => {
+        if (ents.some((e) => e.isIntersecting)) { sendView(); vio.disconnect(); }
+      }, { threshold: 0.25 });
+      vio.observe(oferta);
+    } else sendView();
   }
 
   $$("[data-checkout]").forEach((a) => {
     a.addEventListener("click", (e) => {
-      track("trackCustom", "ClicComprar", { ubicacion: a.dataset.checkout });
+      track("track", "InitiateCheckout", { content_name: PRODUCTO, value: precioActual(), currency: "USD", num_items: 1 });
       // Damos 200 ms para que el evento salga antes de ir al checkout.
       if (pixelId && !e.metaKey && !e.ctrlKey && !e.shiftKey && e.button === 0) {
         e.preventDefault();

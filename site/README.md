@@ -31,7 +31,7 @@ Ejemplo: copiá tu foto a `assets/img/ezequiel.webp` y poné `fotoEzequiel: "ass
 - **Precio:** no aparece antes de la sección 8. En celular, la barra fija de compra aparece después de Bonos y se esconde cuando ya hay un botón de compra en pantalla.
 - **Cuenta regresiva:** fecha fija `2026-12-08T23:59:00-03:00`. No se reinicia al recargar. Al vencer, se ocultan el descuento, el contador y las fechas de preventa, se muestra USD 29 y los botones pasan a decir "Quiero mi lugar".
 - **Checkout:** todos los botones de compra van a Winnerfy. Si el anuncio trae `utm_*` o `fbclid`, se pasan al checkout.
-- **Píxel de Meta:** se carga después de que la página terminó de cargar. Eventos: `PageView`, `ViewContent`, `Scroll50`, `Scroll75` y `ClicComprar` (con `ubicacion`: oferta, oferta_final o barra_fija). No dispara `InitiateCheckout` ni `Purchase`: los registra Winnerfy.
+- **Píxel de Meta:** se carga después de que la página terminó de cargar. Eventos: `PageView` (al cargar), `ViewContent` (cuando la oferta entra en pantalla) e `InitiateCheckout` (clic en cualquier botón de compra). `Purchase` lo registra la pasarela de pago.
 
 ## Probar en tu compu
 ```bash
