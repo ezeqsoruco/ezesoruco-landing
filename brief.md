@@ -5,7 +5,7 @@
 - **Nombre:** Creá tu Página Web con IA.
 - **Objetivo:** validar intención de compra con tráfico de Meta Ads (mayoría celular).
 - **CTA principal:** Compra → checkout de Winnerfy
-  `https://ezesoruco.winnerfy.app/checkout/webs-pro-con-inteligencia-artificial`
+  `https://pay.ezesoruco.com/checkout/webs-pro-con-inteligencia-artificial`
 - **Público:** (1) dueños de negocio que quieren una página profesional; (2) personas que buscan un ingreso extra creando páginas para otros.
 - **Idioma:** español rioplatense (voseo). Siempre "Claude", nunca "Cloud".
 - **Referencia:** no hay. La landing en sí es la demostración del curso.

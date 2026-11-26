@@ -7,7 +7,7 @@
    ========================================================== */
 window.SITE_CONFIG = {
   // Checkout de Winnerfy (todos los botones de compra van acá)
-  checkoutUrl: "https://ezesoruco.winnerfy.app/checkout/webs-pro-con-inteligencia-artificial",
+  checkoutUrl: "https://pay.ezesoruco.com/checkout/webs-pro-con-inteligencia-artificial",
 
   // [PENDIENTE] ID del píxel de Meta (solo números). Vacío = no se carga.
   metaPixelId: "",
